@@ -15,6 +15,7 @@ const BRICK_W = 48,
 const BRICK_OFFSET_X = 12; // (600 - 12×48) / 2
 const BRICK_OFFSET_Y = 100;
 const ROW_COLORS = ['red', 'yellow', 'cyan', 'magenta', 'hotpink', 'green'];
+const POINTS_PER_BRICK = 10;
 const MAX_DT = 1 / 30; // s; evita saltos tras cambiar de pestaña
 
 // Estado
@@ -35,6 +36,7 @@ function buildBricks() {
 
 const state = {
   status: 'serve', // 'serve' | 'playing' | 'gameover' | 'win'
+  score: 0,
   paddle: { x: (WIDTH - PADDLE_W) / 2 }, // y fija en PADDLE_Y
   ball: { x: 0, y: 0, vx: 0, vy: 0 }, // esquina superior izquierda; px/s
   bricks: buildBricks(), // { x, y, color, alive }
@@ -90,6 +92,30 @@ function updatePaddle(dt) {
   state.paddle.x = Math.max(0, Math.min(WIDTH - PADDLE_W, state.paddle.x));
 }
 
+// Rompe como máximo un bloque por frame y rebota por el eje de menor penetración
+function hitBrick(ball) {
+  for (const brick of state.bricks) {
+    if (!brick.alive) continue;
+
+    const overlapX = Math.min(ball.x + BALL_SIZE - brick.x, brick.x + BRICK_W - ball.x);
+    const overlapY = Math.min(ball.y + BALL_SIZE - brick.y, brick.y + BRICK_H - ball.y);
+    if (overlapX <= 0 || overlapY <= 0) continue;
+
+    brick.alive = false;
+    state.score += POINTS_PER_BRICK;
+
+    // El signo se fija según el lado del bloque para no volver a meter la pelota en él
+    if (overlapX < overlapY) {
+      const fromLeft = ball.x + BALL_SIZE / 2 < brick.x + BRICK_W / 2;
+      ball.vx = fromLeft ? -Math.abs(ball.vx) : Math.abs(ball.vx);
+    } else {
+      const fromAbove = ball.y + BALL_SIZE / 2 < brick.y + BRICK_H / 2;
+      ball.vy = fromAbove ? -Math.abs(ball.vy) : Math.abs(ball.vy);
+    }
+    return;
+  }
+}
+
 function updateBall(dt) {
   const ball = state.ball;
 
@@ -128,6 +154,8 @@ function updateBall(dt) {
     ball.y = PADDLE_Y - BALL_SIZE;
     ball.vy = -ball.vy;
   }
+
+  hitBrick(ball);
 
   // Caída por debajo del canvas
   if (ball.y > HEIGHT) {
