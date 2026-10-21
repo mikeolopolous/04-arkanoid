@@ -15,6 +15,7 @@ const BRICK_W = 48,
 const BRICK_OFFSET_X = 12; // (600 - 12×48) / 2
 const BRICK_OFFSET_Y = 100;
 const ROW_COLORS = ['red', 'yellow', 'cyan', 'magenta', 'hotpink', 'green'];
+const START_LIVES = 3;
 const POINTS_PER_BRICK = 10;
 const MAX_DT = 1 / 30; // s; evita saltos tras cambiar de pestaña
 
@@ -37,6 +38,7 @@ function buildBricks() {
 const state = {
   status: 'serve', // 'serve' | 'playing' | 'gameover' | 'win'
   score: 0,
+  lives: START_LIVES,
   paddle: { x: (WIDTH - PADDLE_W) / 2 }, // y fija en PADDLE_Y
   ball: { x: 0, y: 0, vx: 0, vy: 0 }, // esquina superior izquierda; px/s
   bricks: buildBricks(), // { x, y, color, alive }
@@ -157,17 +159,45 @@ function updateBall(dt) {
 
   hitBrick(ball);
 
-  // Caída por debajo del canvas
+  // Caída por debajo del canvas: se pierde una vida
   if (ball.y > HEIGHT) {
     ball.vx = 0;
     ball.vy = 0;
-    state.status = 'serve';
+    state.lives -= 1;
+    state.status = state.lives === 0 ? 'gameover' : 'serve';
   }
 }
 
 function update(dt) {
+  if (state.status === 'gameover') return;
   updatePaddle(dt);
   updateBall(dt);
+}
+
+function drawHud() {
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 20px monospace';
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'left';
+  ctx.fillText(`PUNTOS ${state.score}`, 12, HUD_HEIGHT / 2);
+  ctx.textAlign = 'right';
+  ctx.fillText(`VIDAS ${state.lives}`, WIDTH - 12, HUD_HEIGHT / 2);
+
+  // Línea que marca el techo
+  ctx.fillStyle = '#444';
+  ctx.fillRect(0, HUD_HEIGHT - 1, WIDTH, 1);
+}
+
+function drawMessage(title) {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+  ctx.fillRect(0, 0, WIDTH, HEIGHT);
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = 'bold 56px monospace';
+  ctx.fillText(title, WIDTH / 2, HEIGHT / 2 - 20);
+  ctx.font = '20px monospace';
+  ctx.fillText('Recarga la página para jugar de nuevo', WIDTH / 2, HEIGHT / 2 + 30);
 }
 
 function render() {
@@ -177,6 +207,8 @@ function render() {
   }
   drawSprite(ctx, 'paddle', state.paddle.x, PADDLE_Y, PADDLE_W, PADDLE_H);
   drawSprite(ctx, 'ball', state.ball.x, state.ball.y, BALL_SIZE, BALL_SIZE);
+  drawHud();
+  if (state.status === 'gameover') drawMessage('GAME OVER');
 }
 
 let lastTime = null;
