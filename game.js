@@ -10,7 +10,7 @@ const MAX_DT = 1 / 30; // s; evita saltos tras cambiar de pestaña
 // Estado
 const state = {
   paddle: { x: (WIDTH - PADDLE_W) / 2 }, // y fija en PADDLE_Y
-  input: { left: false, right: false },
+  input: { left: false, right: false, mouseX: null },
 };
 
 const canvas = document.getElementById('game');
@@ -30,9 +30,19 @@ function setKey(e, pressed) {
 window.addEventListener('keydown', (e) => setKey(e, true));
 window.addEventListener('keyup', (e) => setKey(e, false));
 
+canvas.addEventListener('mousemove', (e) => {
+  state.input.mouseX = e.clientX - canvas.getBoundingClientRect().left;
+});
+
 function updatePaddle(dt) {
-  const dir = (state.input.right ? 1 : 0) - (state.input.left ? 1 : 0);
-  state.paddle.x += dir * PADDLE_SPEED * dt;
+  // El ratón tiene prioridad si se movió en este frame; mouseX se consume aquí
+  if (state.input.mouseX !== null) {
+    state.paddle.x = state.input.mouseX - PADDLE_W / 2;
+    state.input.mouseX = null;
+  } else {
+    const dir = (state.input.right ? 1 : 0) - (state.input.left ? 1 : 0);
+    state.paddle.x += dir * PADDLE_SPEED * dt;
+  }
   state.paddle.x = Math.max(0, Math.min(WIDTH - PADDLE_W, state.paddle.x));
 }
 
