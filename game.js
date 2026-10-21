@@ -8,13 +8,36 @@ const PADDLE_W = 100,
 const PADDLE_Y = HEIGHT - 60; // borde superior de la paleta
 const BALL_SIZE = 12,
   BALL_SPEED = 400; // px/s (módulo de la velocidad)
+const BRICK_COLS = 12,
+  BRICK_ROWS = 6;
+const BRICK_W = 48,
+  BRICK_H = 24; // sprite 32×16 escalado ×1.5
+const BRICK_OFFSET_X = 12; // (600 - 12×48) / 2
+const BRICK_OFFSET_Y = 100;
+const ROW_COLORS = ['red', 'yellow', 'cyan', 'magenta', 'hotpink', 'green'];
 const MAX_DT = 1 / 30; // s; evita saltos tras cambiar de pestaña
 
 // Estado
+function buildBricks() {
+  const bricks = [];
+  for (let row = 0; row < BRICK_ROWS; row++) {
+    for (let col = 0; col < BRICK_COLS; col++) {
+      bricks.push({
+        x: BRICK_OFFSET_X + col * BRICK_W,
+        y: BRICK_OFFSET_Y + row * BRICK_H,
+        color: ROW_COLORS[row],
+        alive: true,
+      });
+    }
+  }
+  return bricks;
+}
+
 const state = {
   status: 'serve', // 'serve' | 'playing' | 'gameover' | 'win'
   paddle: { x: (WIDTH - PADDLE_W) / 2 }, // y fija en PADDLE_Y
   ball: { x: 0, y: 0, vx: 0, vy: 0 }, // esquina superior izquierda; px/s
+  bricks: buildBricks(), // { x, y, color, alive }
   input: { left: false, right: false, mouseX: null },
 };
 
@@ -121,6 +144,9 @@ function update(dt) {
 
 function render() {
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  for (const brick of state.bricks) {
+    if (brick.alive) drawSprite(ctx, `block_${brick.color}`, brick.x, brick.y, BRICK_W, BRICK_H);
+  }
   drawSprite(ctx, 'paddle', state.paddle.x, PADDLE_Y, PADDLE_W, PADDLE_H);
   drawSprite(ctx, 'ball', state.ball.x, state.ball.y, BALL_SIZE, BALL_SIZE);
 }
