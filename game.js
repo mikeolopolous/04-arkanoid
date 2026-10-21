@@ -94,6 +94,18 @@ function updateBall(dt) {
     ball.vy = Math.abs(ball.vy);
   }
 
+  // Paleta: solo si la pelota baja, para no quedar atrapada en ella
+  if (
+    ball.vy > 0 &&
+    ball.x + BALL_SIZE > state.paddle.x &&
+    ball.x < state.paddle.x + PADDLE_W &&
+    ball.y + BALL_SIZE > PADDLE_Y &&
+    ball.y < PADDLE_Y + PADDLE_H
+  ) {
+    ball.y = PADDLE_Y - BALL_SIZE;
+    ball.vy = -ball.vy;
+  }
+
   // Caída por debajo del canvas
   if (ball.y > HEIGHT) {
     ball.vx = 0;
