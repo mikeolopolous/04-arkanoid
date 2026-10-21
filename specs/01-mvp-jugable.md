@@ -1,6 +1,6 @@
 # SPEC 01 — MVP jugable de Arkanoid
 
-> **Status:** Borrador
+> **Status:** aprobado
 > **Depends on:** —
 > **Date:** 2026-10-21
 > **Objective:** Una partida jugable de Arkanoid en un canvas de 600×800 con paleta, pelota, un nivel fijo de bloques, puntuación y 3 vidas.
@@ -43,27 +43,34 @@
 // game.js — constantes
 const WIDTH = 600;
 const HEIGHT = 800;
-const HUD_HEIGHT = 40;          // franja superior para puntos y vidas
-const PADDLE_W = 100, PADDLE_H = 16, PADDLE_SPEED = 500;  // px/s
-const PADDLE_Y = HEIGHT - 60;   // borde superior de la paleta
-const BALL_SIZE = 12, BALL_SPEED = 400;                   // px/s (módulo de la velocidad)
-const BRICK_COLS = 12, BRICK_ROWS = 6;
-const BRICK_W = 48, BRICK_H = 24;                         // sprite 32×16 escalado ×1.5
-const BRICK_OFFSET_X = 12;      // (600 - 12×48) / 2
+const HUD_HEIGHT = 40; // franja superior para puntos y vidas
+const PADDLE_W = 100,
+  PADDLE_H = 16,
+  PADDLE_SPEED = 500; // px/s
+const PADDLE_Y = HEIGHT - 60; // borde superior de la paleta
+const BALL_SIZE = 12,
+  BALL_SPEED = 400; // px/s (módulo de la velocidad)
+const BRICK_COLS = 12,
+  BRICK_ROWS = 6;
+const BRICK_W = 48,
+  BRICK_H = 24; // sprite 32×16 escalado ×1.5
+const BRICK_OFFSET_X = 12; // (600 - 12×48) / 2
 const BRICK_OFFSET_Y = 100;
 const ROW_COLORS = ['red', 'yellow', 'cyan', 'magenta', 'hotpink', 'green'];
 const START_LIVES = 3;
 const POINTS_PER_BRICK = 10;
-const MAX_DT = 1 / 30;          // s; evita saltos tras cambiar de pestaña
+const MAX_DT = 1 / 30; // s; evita saltos tras cambiar de pestaña
 
 // game.js — estado
 const state = {
-  status: 'serve',              // 'serve' | 'playing' | 'gameover' | 'win'
+  status: 'serve', // 'serve' | 'playing' | 'gameover' | 'win'
   score: 0,
   lives: START_LIVES,
-  paddle: { x: (WIDTH - PADDLE_W) / 2 },  // y fija en PADDLE_Y
-  ball: { x: 0, y: 0, vx: 0, vy: 0 },     // esquina superior izquierda; px/s
-  bricks: [ /* { x, y, color, alive: true } */ ],
+  paddle: { x: (WIDTH - PADDLE_W) / 2 }, // y fija en PADDLE_Y
+  ball: { x: 0, y: 0, vx: 0, vy: 0 }, // esquina superior izquierda; px/s
+  bricks: [
+    /* { x, y, color, alive: true } */
+  ],
   input: { left: false, right: false, mouseX: null },
 };
 ```
@@ -129,13 +136,13 @@ Convenciones:
 
 ## Riesgos
 
-| Riesgo | Mitigación |
-| --- | --- |
-| Con reflexión simple la pelota sigue siempre la misma trayectoria y puede quedar en un bucle sin tocar bloques. | Aceptado para el MVP. El ángulo según el punto de impacto queda para una spec futura. |
-| Efecto túnel: la pelota atraviesa un bloque o la paleta en un frame largo. | `dt` limitado a `MAX_DT` (1/30 s): avance máximo ≈ 13 px por frame, menor que `BRICK_H` y `PADDLE_H`. |
-| Abrir `index.html` con `file://` puede bloquear la carga del spritesheet en el canvas. | Servir con `python3 -m http.server`, como indica `CLAUDE.md`. |
-| La pelota rebota varias veces seguidas contra la paleta y queda atrapada en ella. | Invertir `vy` solo si `vy > 0` y recolocar la pelota justo encima de la paleta. |
-| Con 800 px de alto el canvas no cabe entero en pantallas bajas. | Aceptado: se eligió tamaño fijo sin escalado. El escalado queda fuera de alcance. |
+| Riesgo                                                                                                          | Mitigación                                                                                            |
+| --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Con reflexión simple la pelota sigue siempre la misma trayectoria y puede quedar en un bucle sin tocar bloques. | Aceptado para el MVP. El ángulo según el punto de impacto queda para una spec futura.                 |
+| Efecto túnel: la pelota atraviesa un bloque o la paleta en un frame largo.                                      | `dt` limitado a `MAX_DT` (1/30 s): avance máximo ≈ 13 px por frame, menor que `BRICK_H` y `PADDLE_H`. |
+| Abrir `index.html` con `file://` puede bloquear la carga del spritesheet en el canvas.                          | Servir con `python3 -m http.server`, como indica `CLAUDE.md`.                                         |
+| La pelota rebota varias veces seguidas contra la paleta y queda atrapada en ella.                               | Invertir `vy` solo si `vy > 0` y recolocar la pelota justo encima de la paleta.                       |
+| Con 800 px de alto el canvas no cabe entero en pantallas bajas.                                                 | Aceptado: se eligió tamaño fijo sin escalado. El escalado queda fuera de alcance.                     |
 
 ## Qué **no** entra en esta spec
 
