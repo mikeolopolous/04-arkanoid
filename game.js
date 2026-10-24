@@ -11,6 +11,9 @@ const BALL_SIZE = 12,
 const BRICK_COLS = 12,
   BRICK_ROWS = 6; // filas del nivel 1
 const MAX_ROWS = 12; // tope de filas: 100 + 12×24 = 388 px, lejos de la paleta (740)
+const SPECIAL_COLS = [2, 9]; // columnas (base 0) de los bloques especiales
+const SPECIAL_COLOR = 'gray'; // único color de los especiales
+const SPECIAL_HITS = 2;
 const BRICK_W = 48,
   BRICK_H = 24; // sprite 32×16 escalado ×1.5
 const BRICK_OFFSET_X = 12; // (600 - 12×48) / 2
@@ -41,17 +44,20 @@ function levelMultiplier(level) {
   return level === 1 ? 1 : 2 * (level - 1);
 }
 
-// Una fila más por nivel hasta MAX_ROWS; los colores de fila ciclan ROW_COLORS
+// Una fila más por nivel hasta MAX_ROWS; los colores de fila ciclan ROW_COLORS.
+// Las primeras level − 1 filas llevan especiales en SPECIAL_COLS.
 function buildBricks(level) {
   const rows = Math.min(BRICK_ROWS + level - 1, MAX_ROWS);
+  const specialRows = Math.min(level - 1, rows);
   const bricks = [];
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < BRICK_COLS; col++) {
+      const special = row < specialRows && SPECIAL_COLS.includes(col);
       bricks.push({
         x: BRICK_OFFSET_X + col * BRICK_W,
         y: BRICK_OFFSET_Y + row * BRICK_H,
-        color: ROW_COLORS[row % ROW_COLORS.length],
-        hits: 1, // golpes que faltan para romperlo
+        color: special ? SPECIAL_COLOR : ROW_COLORS[row % ROW_COLORS.length],
+        hits: special ? SPECIAL_HITS : 1, // golpes que faltan para romperlo
         alive: true,
       });
     }
