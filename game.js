@@ -188,8 +188,16 @@ function drawHud() {
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'left';
   ctx.fillText(`PUNTOS ${state.score}`, 12, HUD_HEIGHT / 2);
+
+  // Vidas: una bola por vida, alineadas a la derecha
+  const lifeSize = 16,
+    lifeGap = 6;
+  const livesX = WIDTH - 12 - state.lives * (lifeSize + lifeGap) + lifeGap;
+  for (let i = 0; i < state.lives; i++) {
+    drawSprite(ctx, 'ball', livesX + i * (lifeSize + lifeGap), (HUD_HEIGHT - lifeSize) / 2, lifeSize, lifeSize);
+  }
   ctx.textAlign = 'right';
-  ctx.fillText(`VIDAS ${state.lives}`, WIDTH - 12, HUD_HEIGHT / 2);
+  ctx.fillText('VIDAS', livesX - 10, HUD_HEIGHT / 2);
 
   // Línea que marca el techo
   ctx.fillStyle = '#444';
