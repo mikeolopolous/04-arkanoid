@@ -159,6 +159,14 @@ function updateBall(dt) {
 
   hitBrick(ball);
 
+  // Victoria: no quedan bloques vivos
+  if (!state.bricks.some((brick) => brick.alive)) {
+    ball.vx = 0;
+    ball.vy = 0;
+    state.status = 'win';
+    return;
+  }
+
   // Caída por debajo del canvas: se pierde una vida
   if (ball.y > HEIGHT) {
     ball.vx = 0;
@@ -169,7 +177,7 @@ function updateBall(dt) {
 }
 
 function update(dt) {
-  if (state.status === 'gameover') return;
+  if (state.status === 'gameover' || state.status === 'win') return;
   updatePaddle(dt);
   updateBall(dt);
 }
@@ -209,6 +217,7 @@ function render() {
   drawSprite(ctx, 'ball', state.ball.x, state.ball.y, BALL_SIZE, BALL_SIZE);
   drawHud();
   if (state.status === 'gameover') drawMessage('GAME OVER');
+  if (state.status === 'win') drawMessage('¡VICTORIA!');
 }
 
 let lastTime = null;
