@@ -257,6 +257,8 @@ function drawHud() {
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'left';
   ctx.fillText(`PUNTOS ${state.score}`, 12, HUD_HEIGHT / 2);
+  ctx.textAlign = 'center';
+  ctx.fillText(`NIVEL ${state.level}`, WIDTH / 2, HUD_HEIGHT / 2);
 
   // Vidas: una bola por vida, alineadas a la derecha
   const lifeSize = 16,
