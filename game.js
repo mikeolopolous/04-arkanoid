@@ -273,7 +273,8 @@ function drawHud() {
   ctx.fillRect(0, HUD_HEIGHT - 1, WIDTH, 1);
 }
 
-function drawMessage(title) {
+// subtitle es opcional; sin él solo se dibuja el título
+function drawMessage(title, subtitle) {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
   ctx.fillRect(0, 0, WIDTH, HEIGHT);
   ctx.fillStyle = '#fff';
@@ -281,8 +282,9 @@ function drawMessage(title) {
   ctx.textBaseline = 'middle';
   ctx.font = 'bold 56px monospace';
   ctx.fillText(title, WIDTH / 2, HEIGHT / 2 - 20);
+  if (!subtitle) return;
   ctx.font = '20px monospace';
-  ctx.fillText('Recarga la página para jugar de nuevo', WIDTH / 2, HEIGHT / 2 + 30);
+  ctx.fillText(subtitle, WIDTH / 2, HEIGHT / 2 + 30);
 }
 
 function render() {
@@ -301,9 +303,9 @@ function render() {
   drawSprite(ctx, 'paddle', state.paddle.x, PADDLE_Y, PADDLE_W, PADDLE_H);
   drawSprite(ctx, 'ball', state.ball.x, state.ball.y, BALL_SIZE, BALL_SIZE);
   drawHud();
-  if (state.status === 'gameover') drawMessage('GAME OVER');
-  // La victoria espera a que termine la explosión del último bloque
-  if (state.status === 'win' && state.explosions.length === 0) drawMessage('¡VICTORIA!');
+  if (state.status === 'gameover') drawMessage('GAME OVER', 'Recarga la página para jugar de nuevo');
+  // El overlay de nivel espera a que termine la explosión del último bloque
+  if (state.status === 'levelup' && state.explosions.length === 0) drawMessage(`NIVEL ${state.level + 1}`);
 }
 
 let lastTime = null;
