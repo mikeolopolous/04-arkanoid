@@ -1,6 +1,6 @@
 # SPEC 03 — Sonidos de rebote y ruptura
 
-> **Status:** aprobado
+> **Status:** implementado
 > **Depends on:** SPEC 01, SPEC 02
 > **Date:** 2026-10-24
 > **Objective:** La pelota reproduce `ball-bounce.mp3` al rebotar en paredes laterales, techo y paleta, y `break-sound.mp3` (nunca el de rebote) al romper un bloque.
@@ -53,17 +53,17 @@ Convenciones:
 
 ## Criterios de aceptación
 
-- [ ] Rebotar en la pared izquierda, la derecha o el techo reproduce `ball-bounce.mp3` una vez por rebote.
-- [ ] Rebotar en la paleta reproduce `ball-bounce.mp3` una vez por rebote.
-- [ ] Romper un bloque reproduce `break-sound.mp3` y no reproduce `ball-bounce.mp3`.
-- [ ] `break-sound.mp3` no suena en ningún otro momento que al romper un bloque.
+- [x] Rebotar en la pared izquierda, la derecha o el techo reproduce `ball-bounce.mp3` una vez por rebote.
+- [x] Rebotar en la paleta reproduce `ball-bounce.mp3` una vez por rebote.
+- [x] Romper un bloque reproduce `break-sound.mp3` y no reproduce `ball-bounce.mp3`.
+- [x] `break-sound.mp3` no suena en ningún otro momento que al romper un bloque.
 - [ ] Romper el último bloque reproduce `break-sound.mp3`.
-- [ ] Con la pelota en `'serve'` no suena nada aunque se mueva la paleta.
-- [ ] Al caer la pelota por el borde inferior no suena nada.
+- [x] Con la pelota en `'serve'` no suena nada aunque se mueva la paleta.
+- [x] Al caer la pelota por el borde inferior no suena nada.
 - [ ] Romper bloques en frames seguidos reproduce todos los sonidos solapados, sin que uno corte al anterior.
-- [ ] Un rebote en pared y una ruptura en el mismo frame reproducen ambos sonidos.
+- [x] Un rebote en pared y una ruptura en el mismo frame reproducen ambos sonidos.
 - [ ] Si se bloquea el audio en el navegador, el juego funciona igual y no hay errores en consola.
-- [ ] El proyecto sigue sin dependencias externas; `index.html` y `assets/` no se modifican.
+- [x] El proyecto sigue sin dependencias externas; `index.html` y `assets/` no se modifican.
 
 ## Decisiones
 
