@@ -242,7 +242,8 @@ function render() {
   drawSprite(ctx, 'ball', state.ball.x, state.ball.y, BALL_SIZE, BALL_SIZE);
   drawHud();
   if (state.status === 'gameover') drawMessage('GAME OVER');
-  if (state.status === 'win') drawMessage('¡VICTORIA!');
+  // La victoria espera a que termine la explosión del último bloque
+  if (state.status === 'win' && state.explosions.length === 0) drawMessage('¡VICTORIA!');
 }
 
 let lastTime = null;

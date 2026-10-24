@@ -1,6 +1,6 @@
 # SPEC 02 — Animación de explosión al destruir bloques
 
-> **Status:** aprobado
+> **Status:** implementado
 > **Depends on:** SPEC 01
 > **Date:** 2026-10-24
 > **Objective:** Cada bloque roto reproduce en su hueco la animación de 4 frames de `EXPLOSION_FRAMES` a 150 ms por frame antes de desaparecer del todo.
@@ -60,16 +60,16 @@ Convenciones:
 
 ## Criterios de aceptación
 
-- [ ] Al romper un bloque se ven, en su mismo hueco de 48×24, los 4 frames de explosión del color del bloque, en orden.
-- [ ] La animación dura 600 ms (±1 frame) y después el hueco queda vacío.
-- [ ] La pelota no rebota en un bloque que está explotando.
-- [ ] Romper varios bloques seguidos muestra varias explosiones a la vez, cada una en su fase.
+- [x] Al romper un bloque se ven, en su mismo hueco de 48×24, los 4 frames de explosión del color del bloque, en orden.
+- [x] La animación dura 600 ms (±1 frame) y después el hueco queda vacío.
+- [x] La pelota no rebota en un bloque que está explotando.
+- [x] Romper varios bloques seguidos muestra varias explosiones a la vez, cada una en su fase.
 - [ ] Una explosión en curso termina su animación aunque se pierda una vida, y también bajo el overlay de "GAME OVER".
 - [ ] Al romper el último bloque la pelota y la paleta se detienen al instante y "¡VICTORIA!" aparece solo cuando su explosión termina.
 - [ ] La victoria sigue mostrando 720 puntos.
 - [ ] La animación dura lo mismo en un monitor de 60 Hz y en uno de 120 Hz.
-- [ ] No hay errores en consola y el proyecto sigue sin dependencias externas.
-- [ ] `assets/spritesheet.js` no se modifica.
+- [x] No hay errores en consola y el proyecto sigue sin dependencias externas.
+- [x] `assets/spritesheet.js` no se modifica.
 
 ## Decisiones
 
