@@ -120,6 +120,7 @@ function hitBrick(ball) {
     if (overlapX <= 0 || overlapY <= 0) continue;
 
     brick.alive = false;
+    playSound('break'); // solo ruptura: el rebote contra el bloque no suena
     state.explosions.push({ x: brick.x, y: brick.y, color: brick.color, elapsed: 0 });
     state.score += POINTS_PER_BRICK;
 
