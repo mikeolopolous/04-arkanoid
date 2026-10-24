@@ -179,7 +179,17 @@ function updateBall(dt) {
   }
 }
 
+// Avanza las explosiones y quita las terminadas, así render() nunca ve un frame fuera de rango
+function updateExplosions(dt) {
+  for (const explosion of state.explosions) explosion.elapsed += dt;
+  state.explosions = state.explosions.filter(
+    (explosion) => explosion.elapsed < EXPLOSION_FRAMES[explosion.color].length * EXPLOSION_FRAME_TIME,
+  );
+}
+
 function update(dt) {
+  // Antes del corte por estado final: las explosiones se animan también en 'gameover' y 'win'
+  updateExplosions(dt);
   if (state.status === 'gameover' || state.status === 'win') return;
   updatePaddle(dt);
   updateBall(dt);
