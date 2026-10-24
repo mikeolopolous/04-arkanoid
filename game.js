@@ -18,6 +18,7 @@ const ROW_COLORS = ['red', 'yellow', 'cyan', 'magenta', 'hotpink', 'green'];
 const START_LIVES = 3;
 const POINTS_PER_BRICK = 10;
 const MAX_DT = 1 / 30; // s; evita saltos tras cambiar de pestaña
+const EXPLOSION_FRAME_TIME = EXPLOSION_DURATION / 1000; // s por frame (0,15)
 
 // Estado
 function buildBricks() {
@@ -42,6 +43,7 @@ const state = {
   paddle: { x: (WIDTH - PADDLE_W) / 2 }, // y fija en PADDLE_Y
   ball: { x: 0, y: 0, vx: 0, vy: 0 }, // esquina superior izquierda; px/s
   bricks: buildBricks(), // { x, y, color, alive }
+  explosions: [], // { x, y, color, elapsed }; elapsed en s
   input: { left: false, right: false, mouseX: null },
 };
 
@@ -104,6 +106,7 @@ function hitBrick(ball) {
     if (overlapX <= 0 || overlapY <= 0) continue;
 
     brick.alive = false;
+    state.explosions.push({ x: brick.x, y: brick.y, color: brick.color, elapsed: 0 });
     state.score += POINTS_PER_BRICK;
 
     // El signo se fija según el lado del bloque para no volver a meter la pelota en él
