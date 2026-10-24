@@ -1,6 +1,6 @@
 # SPEC 04 — Niveles con filas crecientes, bloques resistentes y pelota más rápida
 
-> **Status:** aprobado
+> **Status:** implementado
 > **Depends on:** SPEC 01, SPEC 02, SPEC 03
 > **Date:** 2026-10-24
 > **Objective:** Al romper todos los bloques se pasa a un nivel nuevo con una fila más, bloques grises que necesitan dos golpes, una pelota 20 px/s más rápida y un multiplicador de puntos ×1, ×2, ×4, ×6…
@@ -92,27 +92,27 @@ Convenciones:
 
 ## Criterios de aceptación
 
-- [ ] Al cargar, el HUD muestra "NIVEL 1", hay 6 filas × 12 columnas y ningún bloque gris.
-- [ ] En el nivel 1 cada bloque roto suma 10 puntos.
-- [ ] Al romper el último bloque, la pelota y la paleta se detienen al instante.
-- [ ] El overlay "NIVEL 2" aparece cuando termina la última explosión y dura 1,5 s (±1 frame).
-- [ ] Tras el overlay, el nivel 2 tiene 7 filas y la pelota está pegada a la paleta en `'serve'`.
-- [ ] Vidas y puntos se conservan al cambiar de nivel.
-- [ ] El nivel 2 tiene exactamente 2 bloques grises, en las columnas 2 y 9 de la fila superior.
+- [x] Al cargar, el HUD muestra "NIVEL 1", hay 6 filas × 12 columnas y ningún bloque gris.
+- [x] En el nivel 1 cada bloque roto suma 10 puntos.
+- [x] Al romper el último bloque, la pelota y la paleta se detienen al instante.
+- [x] El overlay "NIVEL 2" aparece cuando termina la última explosión y dura 1,5 s (±1 frame).
+- [x] Tras el overlay, el nivel 2 tiene 7 filas y la pelota está pegada a la paleta en `'serve'`.
+- [x] Vidas y puntos se conservan al cambiar de nivel.
+- [x] El nivel 2 tiene exactamente 2 bloques grises, en las columnas 2 y 9 de la fila superior.
 - [ ] El nivel 3 tiene 8 filas y 4 grises (columnas 2 y 9 de las filas 0 y 1).
 - [ ] A partir del nivel 7 hay 12 filas; las filas 7–12 tienen los colores red, yellow, cyan, magenta, hotpink y green.
 - [ ] `buildBricks(13)` y `buildBricks(14)` tienen 24 grises.
-- [ ] Ningún bloque normal es gris en ningún nivel.
-- [ ] El primer golpe a un gris rebota la pelota, suena `ball-bounce.mp3`, no suma puntos ni explota, y el bloque queda al 50 % de opacidad.
-- [ ] El segundo golpe a un gris suena `break-sound.mp3`, muestra su explosión y suma los puntos del nivel.
-- [ ] Un bloque roto vale 20 puntos en el nivel 2, 40 en el 3 y 60 en el 4 (normal o gris).
-- [ ] Tras el saque, el módulo de la velocidad de la pelota es 400 px/s en el nivel 1, 420 en el 2, 500 en el 6 y 600 en el 11.
+- [x] Ningún bloque normal es gris en ningún nivel.
+- [x] El primer golpe a un gris rebota la pelota, suena `ball-bounce.mp3`, no suma puntos ni explota, y el bloque queda al 50 % de opacidad.
+- [x] El segundo golpe a un gris suena `break-sound.mp3`, muestra su explosión y suma los puntos del nivel.
+- [x] Un bloque roto vale 20 puntos en el nivel 2, 40 en el 3 y 60 en el 4 (normal o gris).
+- [x] Tras el saque, el módulo de la velocidad de la pelota es 400 px/s en el nivel 1, 420 en el 2, 500 en el 6 y 600 en el 11.
 - [ ] En los niveles 12 y siguientes la pelota va a 600 px/s.
-- [ ] Tras perder una vida, el nuevo saque mantiene la velocidad del nivel actual.
+- [x] Tras perder una vida, el nuevo saque mantiene la velocidad del nivel actual.
 - [ ] La paleta se mueve con el teclado a 500 px/s en cualquier nivel.
 - [ ] "¡VICTORIA!" no aparece en ningún momento.
 - [ ] "GAME OVER" sigue apareciendo con 0 vidas en cualquier nivel.
-- [ ] No hay errores en consola; el proyecto sigue sin dependencias y `assets/` no se modifica.
+- [x] No hay errores en consola; el proyecto sigue sin dependencias y `assets/` no se modifica.
 
 ## Decisiones
 
