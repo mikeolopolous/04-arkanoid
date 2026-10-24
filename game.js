@@ -7,7 +7,9 @@ const PADDLE_W = 100,
   PADDLE_SPEED = 500; // px/s
 const PADDLE_Y = HEIGHT - 60; // borde superior de la paleta
 const BALL_SIZE = 12,
-  BALL_SPEED = 400; // px/s (módulo de la velocidad)
+  BALL_SPEED = 400; // px/s (módulo de la velocidad en el nivel 1)
+const BALL_SPEED_STEP = 20; // px/s que gana la pelota por nivel (5 % de BALL_SPEED)
+const MAX_BALL_SPEED = 600; // px/s; tope alcanzado en el nivel 11
 const BRICK_COLS = 12,
   BRICK_ROWS = 6; // filas del nivel 1
 const MAX_ROWS = 12; // tope de filas: 100 + 12×24 = 388 px, lejos de la paleta (740)
@@ -44,6 +46,11 @@ function playSound(name) {
 // ×1 en el nivel 1; ×2, ×4, ×6… a partir del nivel 2
 function levelMultiplier(level) {
   return level === 1 ? 1 : 2 * (level - 1);
+}
+
+// +20 px/s por nivel hasta MAX_BALL_SPEED
+function ballSpeed(level) {
+  return Math.min(BALL_SPEED + BALL_SPEED_STEP * (level - 1), MAX_BALL_SPEED);
 }
 
 // Una fila más por nivel hasta MAX_ROWS; los colores de fila ciclan ROW_COLORS.
@@ -112,8 +119,9 @@ canvas.addEventListener('click', launchBall);
 function launchBall() {
   if (state.status !== 'serve') return;
   const side = Math.random() < 0.5 ? -1 : 1;
-  state.ball.vx = side * BALL_SPEED * Math.cos(Math.PI / 4);
-  state.ball.vy = -BALL_SPEED * Math.sin(Math.PI / 4);
+  const speed = ballSpeed(state.level);
+  state.ball.vx = side * speed * Math.cos(Math.PI / 4);
+  state.ball.vy = -speed * Math.sin(Math.PI / 4);
   state.status = 'playing';
 }
 
