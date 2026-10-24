@@ -20,6 +20,20 @@ const POINTS_PER_BRICK = 10;
 const MAX_DT = 1 / 30; // s; evita saltos tras cambiar de pestaña
 const EXPLOSION_FRAME_TIME = EXPLOSION_DURATION / 1000; // s por frame (0,15)
 
+// Sonidos: originales precargados; nunca se reproducen directamente
+const SOUNDS = {
+  bounce: new Audio('assets/sounds/ball-bounce.mp3'),
+  break: new Audio('assets/sounds/break-sound.mp3'),
+};
+
+// Reproduce un clon para que sonidos iguales se solapen; los fallos de play() se ignoran
+function playSound(name) {
+  SOUNDS[name]
+    .cloneNode()
+    .play()
+    .catch(() => {});
+}
+
 // Estado
 function buildBricks() {
   const bricks = [];
