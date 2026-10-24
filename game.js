@@ -234,6 +234,10 @@ function render() {
   for (const brick of state.bricks) {
     if (brick.alive) drawSprite(ctx, `block_${brick.color}`, brick.x, brick.y, BRICK_W, BRICK_H);
   }
+  for (const explosion of state.explosions) {
+    const frame = Math.floor(explosion.elapsed / EXPLOSION_FRAME_TIME);
+    drawFrame(ctx, EXPLOSION_FRAMES[explosion.color][frame], explosion.x, explosion.y, BRICK_W, BRICK_H);
+  }
   drawSprite(ctx, 'paddle', state.paddle.x, PADDLE_Y, PADDLE_W, PADDLE_H);
   drawSprite(ctx, 'ball', state.ball.x, state.ball.y, BALL_SIZE, BALL_SIZE);
   drawHud();
