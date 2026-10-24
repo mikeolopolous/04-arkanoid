@@ -151,15 +151,18 @@ function updateBall(dt) {
   if (ball.x < 0) {
     ball.x = 0;
     ball.vx = Math.abs(ball.vx);
+    playSound('bounce');
   } else if (ball.x > WIDTH - BALL_SIZE) {
     ball.x = WIDTH - BALL_SIZE;
     ball.vx = -Math.abs(ball.vx);
+    playSound('bounce');
   }
 
   // Techo, justo bajo el HUD
   if (ball.y < HUD_HEIGHT) {
     ball.y = HUD_HEIGHT;
     ball.vy = Math.abs(ball.vy);
+    playSound('bounce');
   }
 
   // Paleta: solo si la pelota baja, para no quedar atrapada en ella
@@ -172,6 +175,7 @@ function updateBall(dt) {
   ) {
     ball.y = PADDLE_Y - BALL_SIZE;
     ball.vy = -ball.vy;
+    playSound('bounce');
   }
 
   hitBrick(ball);
