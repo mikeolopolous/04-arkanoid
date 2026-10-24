@@ -15,6 +15,7 @@ const SPECIAL_COLS = [2, 9]; // columnas (base 0) de los bloques especiales
 const SPECIAL_COLOR = 'gray'; // único color de los especiales
 const SPECIAL_HITS = 2;
 const DAMAGED_ALPHA = 0.5; // opacidad de un especial tras el primer golpe
+const LEVEL_MESSAGE_TIME = 1.5; // s que se muestra el overlay "NIVEL N"
 const BRICK_W = 48,
   BRICK_H = 24; // sprite 32×16 escalado ×1.5
 const BRICK_OFFSET_X = 12; // (600 - 12×48) / 2
@@ -67,10 +68,11 @@ function buildBricks(level) {
 }
 
 const state = {
-  status: 'serve', // 'serve' | 'playing' | 'gameover' | 'win'
+  status: 'serve', // 'serve' | 'playing' | 'gameover' | 'levelup'
   score: 0,
   lives: START_LIVES,
   level: 1,
+  levelTimer: 0, // s restantes del overlay "NIVEL N"; solo se usa en 'levelup'
   paddle: { x: (WIDTH - PADDLE_W) / 2 }, // y fija en PADDLE_Y
   ball: { x: 0, y: 0, vx: 0, vy: 0 }, // esquina superior izquierda; px/s
   bricks: buildBricks(1), // { x, y, color, hits, alive }
@@ -204,11 +206,12 @@ function updateBall(dt) {
 
   hitBrick(ball);
 
-  // Victoria: no quedan bloques vivos
+  // Nivel completado: no quedan bloques vivos
   if (!state.bricks.some((brick) => brick.alive)) {
     ball.vx = 0;
     ball.vy = 0;
-    state.status = 'win';
+    state.status = 'levelup';
+    state.levelTimer = LEVEL_MESSAGE_TIME;
     return;
   }
 
@@ -229,10 +232,21 @@ function updateExplosions(dt) {
   );
 }
 
+// El overlay "NIVEL N" solo descuenta tras la última explosión; luego se carga el nivel siguiente
+function updateLevelUp(dt) {
+  if (state.explosions.length > 0) return;
+  state.levelTimer -= dt;
+  if (state.levelTimer > 0) return;
+  state.level += 1;
+  state.bricks = buildBricks(state.level);
+  state.status = 'serve';
+}
+
 function update(dt) {
-  // Antes del corte por estado final: las explosiones se animan también en 'gameover' y 'win'
+  // Antes del corte por estado: las explosiones se animan también en 'gameover' y 'levelup'
   updateExplosions(dt);
-  if (state.status === 'gameover' || state.status === 'win') return;
+  if (state.status === 'levelup') updateLevelUp(dt);
+  if (state.status === 'gameover' || state.status === 'levelup') return;
   updatePaddle(dt);
   updateBall(dt);
 }
