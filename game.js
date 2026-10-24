@@ -14,6 +14,7 @@ const MAX_ROWS = 12; // tope de filas: 100 + 12×24 = 388 px, lejos de la paleta
 const SPECIAL_COLS = [2, 9]; // columnas (base 0) de los bloques especiales
 const SPECIAL_COLOR = 'gray'; // único color de los especiales
 const SPECIAL_HITS = 2;
+const DAMAGED_ALPHA = 0.5; // opacidad de un especial tras el primer golpe
 const BRICK_W = 48,
   BRICK_H = 24; // sprite 32×16 escalado ×1.5
 const BRICK_OFFSET_X = 12; // (600 - 12×48) / 2
@@ -135,10 +136,16 @@ function hitBrick(ball) {
     const overlapY = Math.min(ball.y + BALL_SIZE - brick.y, brick.y + BRICK_H - ball.y);
     if (overlapX <= 0 || overlapY <= 0) continue;
 
-    brick.alive = false;
-    playSound('break'); // solo ruptura: el rebote contra el bloque no suena
-    state.explosions.push({ x: brick.x, y: brick.y, color: brick.color, elapsed: 0 });
-    state.score += POINTS_PER_BRICK * levelMultiplier(state.level);
+    if (brick.hits > 1) {
+      // Especial sin romper: rebota y suena como una pared, sin puntos ni explosión
+      brick.hits -= 1;
+      playSound('bounce');
+    } else {
+      brick.alive = false;
+      playSound('break'); // solo ruptura: el rebote contra el bloque no suena
+      state.explosions.push({ x: brick.x, y: brick.y, color: brick.color, elapsed: 0 });
+      state.score += POINTS_PER_BRICK * levelMultiplier(state.level);
+    }
 
     // El signo se fija según el lado del bloque para no volver a meter la pelota en él
     if (overlapX < overlapY) {
@@ -267,7 +274,11 @@ function drawMessage(title) {
 function render() {
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
   for (const brick of state.bricks) {
-    if (brick.alive) drawSprite(ctx, `block_${brick.color}`, brick.x, brick.y, BRICK_W, BRICK_H);
+    if (!brick.alive) continue;
+    // El especial dañado se atenúa; globalAlpha se restaura para no afectar al resto del frame
+    if (brick.color === SPECIAL_COLOR && brick.hits === 1) ctx.globalAlpha = DAMAGED_ALPHA;
+    drawSprite(ctx, `block_${brick.color}`, brick.x, brick.y, BRICK_W, BRICK_H);
+    ctx.globalAlpha = 1;
   }
   for (const explosion of state.explosions) {
     const frame = Math.floor(explosion.elapsed / EXPLOSION_FRAME_TIME);
