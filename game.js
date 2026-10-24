@@ -35,6 +35,11 @@ function playSound(name) {
 }
 
 // Estado
+// ×1 en el nivel 1; ×2, ×4, ×6… a partir del nivel 2
+function levelMultiplier(level) {
+  return level === 1 ? 1 : 2 * (level - 1);
+}
+
 function buildBricks() {
   const bricks = [];
   for (let row = 0; row < BRICK_ROWS; row++) {
@@ -54,6 +59,7 @@ const state = {
   status: 'serve', // 'serve' | 'playing' | 'gameover' | 'win'
   score: 0,
   lives: START_LIVES,
+  level: 1,
   paddle: { x: (WIDTH - PADDLE_W) / 2 }, // y fija en PADDLE_Y
   ball: { x: 0, y: 0, vx: 0, vy: 0 }, // esquina superior izquierda; px/s
   bricks: buildBricks(), // { x, y, color, alive }
@@ -122,7 +128,7 @@ function hitBrick(ball) {
     brick.alive = false;
     playSound('break'); // solo ruptura: el rebote contra el bloque no suena
     state.explosions.push({ x: brick.x, y: brick.y, color: brick.color, elapsed: 0 });
-    state.score += POINTS_PER_BRICK;
+    state.score += POINTS_PER_BRICK * levelMultiplier(state.level);
 
     // El signo se fija según el lado del bloque para no volver a meter la pelota en él
     if (overlapX < overlapY) {
