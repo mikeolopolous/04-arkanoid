@@ -1,6 +1,6 @@
 # SPEC 05 — Modularizar `game.js` en ES modules dentro de `src/`
 
-> **Status:** aprobado
+> **Status:** implementado
 > **Depends on:** SPEC 01, SPEC 02, SPEC 03, SPEC 04
 > **Date:** 2026-11-19
 > **Objective:** Dividir `game.js` en ocho ES modules dentro de `src/`, con `state` y `ctx` pasados por parámetro, sin cambiar el comportamiento del juego.
@@ -113,27 +113,27 @@ Cada paso deja el juego jugable e idéntico. Prueba común a todos: servir con `
 
 ## Criterios de aceptación
 
-- [ ] `game.js` no existe en la raíz del repo.
-- [ ] `src/` contiene exactamente `constants.js`, `audio.js`, `levels.js`, `state.js`, `update.js`, `input.js`, `render.js` y `main.js`.
-- [ ] `index.html` tiene exactamente dos `<script>`: `assets/spritesheet.js` (clásico) y `src/main.js` (`type="module"`), en ese orden.
-- [ ] Cada módulo exporta exactamente lo que indica la tabla del modelo de datos.
-- [ ] `createState(`, `document.getElementById` y `getContext` solo aparecen en `src/main.js` (salvo la definición de `createState` en `src/state.js`).
-- [ ] `src/update.js`, `src/render.js` e `src/input.js` no declaran `state` ni `ctx` a nivel de módulo.
-- [ ] `src/input.js` no importa nada de `src/constants.js` ni de `src/levels.js`.
-- [ ] El grafo de imports no tiene ciclos.
-- [ ] `git status` no muestra cambios en `assets/` ni en `style.css`.
-- [ ] El proyecto sigue sin `package.json` ni dependencias.
-- [ ] Servido con `python3 -m http.server 8000`, el juego carga sin errores ni avisos en la consola.
-- [ ] Al cargar: HUD con "PUNTOS 0", "NIVEL 1" y 3 vidas; 6 filas × 12 columnas; pelota pegada a la paleta.
-- [ ] La paleta se mueve con flechas, A/D y ratón; Espacio y clic lanzan la pelota.
-- [ ] Los rebotes en paredes, techo y paleta suenan con `ball-bounce.mp3`; romper un bloque suena con `break-sound.mp3` y muestra su explosión.
-- [ ] En el nivel 1 cada bloque roto suma 10 puntos.
-- [ ] Al limpiar el nivel 1 aparece el overlay "NIVEL 2" durante 1,5 s y después hay 7 filas con 2 bloques grises.
-- [ ] Un bloque gris necesita dos golpes y queda al 50 % de opacidad tras el primero.
-- [ ] Perder las 3 vidas muestra "GAME OVER" con "Recarga la página para jugar de nuevo".
-- [ ] En consola, `window.state.level = 3` hace que el siguiente bloque roto sume 40 puntos.
-- [ ] En consola, tras el saque, `Math.hypot(state.ball.vx, state.ball.vy)` da 400 en el nivel 1.
-- [ ] `CLAUDE.md` no contiene "aún no está implementado" y lista los ocho archivos de `src/`.
+- [x] `game.js` no existe en la raíz del repo.
+- [x] `src/` contiene exactamente `constants.js`, `audio.js`, `levels.js`, `state.js`, `update.js`, `input.js`, `render.js` y `main.js`.
+- [x] `index.html` tiene exactamente dos `<script>`: `assets/spritesheet.js` (clásico) y `src/main.js` (`type="module"`), en ese orden.
+- [x] Cada módulo exporta exactamente lo que indica la tabla del modelo de datos.
+- [x] `createState(`, `document.getElementById` y `getContext` solo aparecen en `src/main.js` (salvo la definición de `createState` en `src/state.js`).
+- [x] `src/update.js`, `src/render.js` e `src/input.js` no declaran `state` ni `ctx` a nivel de módulo.
+- [x] `src/input.js` no importa nada de `src/constants.js` ni de `src/levels.js`.
+- [x] El grafo de imports no tiene ciclos.
+- [x] `git status` no muestra cambios en `assets/` ni en `style.css`.
+- [x] El proyecto sigue sin `package.json` ni dependencias.
+- [x] Servido con `python3 -m http.server 8000`, el juego carga sin errores ni avisos en la consola.
+- [x] Al cargar: HUD con "PUNTOS 0", "NIVEL 1" y 3 vidas; 6 filas × 12 columnas; pelota pegada a la paleta.
+- [x] La paleta se mueve con flechas, A/D y ratón; Espacio y clic lanzan la pelota.
+- [x] Los rebotes en paredes, techo y paleta suenan con `ball-bounce.mp3`; romper un bloque suena con `break-sound.mp3` y muestra su explosión.
+- [x] En el nivel 1 cada bloque roto suma 10 puntos.
+- [x] Al limpiar el nivel 1 aparece el overlay "NIVEL 2" durante 1,5 s y después hay 7 filas con 2 bloques grises.
+- [x] Un bloque gris necesita dos golpes y queda al 50 % de opacidad tras el primero.
+- [x] Perder las 3 vidas muestra "GAME OVER" con "Recarga la página para jugar de nuevo".
+- [x] En consola, `window.state.level = 3` hace que el siguiente bloque roto sume 40 puntos.
+- [x] En consola, tras el saque, `Math.hypot(state.ball.vx, state.ball.vy)` da 400 en el nivel 1.
+- [x] `CLAUDE.md` no contiene "aún no está implementado" y lista los ocho archivos de `src/`.
 
 ## Decisiones
 
