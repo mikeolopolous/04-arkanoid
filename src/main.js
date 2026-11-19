@@ -1,32 +1,33 @@
-// Constantes
-const WIDTH = 600;
-const HEIGHT = 800;
-const HUD_HEIGHT = 40; // franja superior para puntos y vidas
-const PADDLE_W = 100,
-  PADDLE_H = 16,
-  PADDLE_SPEED = 500; // px/s
-const PADDLE_Y = HEIGHT - 60; // borde superior de la paleta
-const BALL_SIZE = 12,
-  BALL_SPEED = 400; // px/s (módulo de la velocidad en el nivel 1)
-const BALL_SPEED_STEP = 20; // px/s que gana la pelota por nivel (5 % de BALL_SPEED)
-const MAX_BALL_SPEED = 600; // px/s; tope alcanzado en el nivel 11
-const BRICK_COLS = 12,
-  BRICK_ROWS = 6; // filas del nivel 1
-const MAX_ROWS = 12; // tope de filas: 100 + 12×24 = 388 px, lejos de la paleta (740)
-const SPECIAL_COLS = [2, 9]; // columnas (base 0) de los bloques especiales
-const SPECIAL_COLOR = 'gray'; // único color de los especiales
-const SPECIAL_HITS = 2;
-const DAMAGED_ALPHA = 0.5; // opacidad de un especial tras el primer golpe
-const LEVEL_MESSAGE_TIME = 1.5; // s que se muestra el overlay "NIVEL N"
-const BRICK_W = 48,
-  BRICK_H = 24; // sprite 32×16 escalado ×1.5
-const BRICK_OFFSET_X = 12; // (600 - 12×48) / 2
-const BRICK_OFFSET_Y = 100;
-const ROW_COLORS = ['red', 'yellow', 'cyan', 'magenta', 'hotpink', 'green'];
-const START_LIVES = 3;
-const POINTS_PER_BRICK = 10;
-const MAX_DT = 1 / 30; // s; evita saltos tras cambiar de pestaña
-const EXPLOSION_FRAME_TIME = EXPLOSION_DURATION / 1000; // s por frame (0,15)
+import {
+  WIDTH,
+  HEIGHT,
+  HUD_HEIGHT,
+  PADDLE_W,
+  PADDLE_H,
+  PADDLE_SPEED,
+  PADDLE_Y,
+  BALL_SIZE,
+  BALL_SPEED,
+  BALL_SPEED_STEP,
+  MAX_BALL_SPEED,
+  BRICK_COLS,
+  BRICK_ROWS,
+  MAX_ROWS,
+  SPECIAL_COLS,
+  SPECIAL_COLOR,
+  SPECIAL_HITS,
+  DAMAGED_ALPHA,
+  LEVEL_MESSAGE_TIME,
+  BRICK_W,
+  BRICK_H,
+  BRICK_OFFSET_X,
+  BRICK_OFFSET_Y,
+  ROW_COLORS,
+  START_LIVES,
+  POINTS_PER_BRICK,
+  MAX_DT,
+  EXPLOSION_FRAME_TIME,
+} from './constants.js';
 
 // Sonidos: originales precargados; nunca se reproducen directamente
 const SOUNDS = {
