@@ -1,6 +1,6 @@
 # SPEC 01 — MVP jugable de Arkanoid
 
-> **Status:** aprobado
+> **Status:** implementado
 > **Depends on:** —
 > **Date:** 2026-10-21
 > **Objective:** Una partida jugable de Arkanoid en un canvas de 600×800 con paleta, pelota, un nivel fijo de bloques, puntuación y 3 vidas.
@@ -98,21 +98,21 @@ Convenciones:
 
 ## Criterios de aceptación
 
-- [ ] Abrir `index.html` servido con `python3 -m http.server` muestra un canvas de 600×800 centrado, sin errores en consola.
-- [ ] El proyecto no tiene dependencias externas: solo `index.html`, `style.css`, `game.js` y `assets/`.
-- [ ] ←/→ y A/D mueven la paleta; mover el ratón sobre el canvas la centra en el puntero.
-- [ ] La paleta nunca sale de los bordes del canvas.
-- [ ] Al empezar y tras perder una vida, la pelota queda sobre la paleta y la sigue hasta pulsar Espacio o hacer clic.
-- [ ] La pelota sale a 45° hacia arriba; en varios saques sale unas veces a la izquierda y otras a la derecha.
-- [ ] La pelota rebota en las paredes laterales, en el techo (bajo el HUD) y en la paleta, sin atravesarlos.
-- [ ] Hay 72 bloques en 6 filas de colores distintos.
-- [ ] Cada bloque golpeado desaparece y suma exactamente 10 puntos.
-- [ ] El HUD muestra la puntuación y las vidas actuales; las vidas empiezan en 3.
-- [ ] Si la pelota cae por debajo del canvas se resta exactamente una vida.
-- [ ] Con 0 vidas se muestra "GAME OVER" y la pelota y la paleta dejan de responder.
-- [ ] Al romper el último bloque se muestra "¡VICTORIA!" con 720 puntos.
-- [ ] La velocidad de la pelota es la misma en un monitor de 60 Hz y en uno de 120 Hz.
-- [ ] Recargar la página empieza una partida nueva con 0 puntos, 3 vidas y 72 bloques.
+- [x] Abrir `index.html` servido con `python3 -m http.server` muestra un canvas de 600×800 centrado, sin errores en consola.
+- [x] El proyecto no tiene dependencias externas: solo `index.html`, `style.css`, `game.js` y `assets/`.
+- [x] ←/→ y A/D mueven la paleta; mover el ratón sobre el canvas la centra en el puntero.
+- [x] La paleta nunca sale de los bordes del canvas.
+- [x] Al empezar y tras perder una vida, la pelota queda sobre la paleta y la sigue hasta pulsar Espacio o hacer clic.
+- [x] La pelota sale a 45° hacia arriba; en varios saques sale unas veces a la izquierda y otras a la derecha.
+- [x] La pelota rebota en las paredes laterales, en el techo (bajo el HUD) y en la paleta, sin atravesarlos.
+- [x] Hay 72 bloques en 6 filas de colores distintos.
+- [x] Cada bloque golpeado desaparece y suma exactamente 10 puntos.
+- [x] El HUD muestra la puntuación y las vidas actuales; las vidas empiezan en 3.
+- [x] Si la pelota cae por debajo del canvas se resta exactamente una vida.
+- [x] Con 0 vidas se muestra "GAME OVER" y la pelota y la paleta dejan de responder.
+- [x] Al romper el último bloque se muestra "¡VICTORIA!" con 720 puntos.
+- [x] La velocidad de la pelota es la misma en un monitor de 60 Hz y en uno de 120 Hz.
+- [x] Recargar la página empieza una partida nueva con 0 puntos, 3 vidas y 72 bloques.
 
 ## Decisiones
 

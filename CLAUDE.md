@@ -6,6 +6,56 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Juego Arkanoid en HTML, CSS y JavaScript vanilla, **cero dependencias** (sin npm, bundler ni frameworks). El juego está implementado; cada funcionalidad tiene su spec en `specs/`.
 
+## Flujo spec-driven
+
+El proyecto se desarrolla con specs: **ninguna funcionalidad o refactor se implementa sin una spec previa** en `specs/`. La spec es la fuente de verdad; el código la sigue, no al revés.
+
+### Archivos
+
+- `specs/NN-slug-en-minusculas.md` — una spec por cambio, numeradas de forma correlativa (`01-mvp-jugable.md` … `05-modularizar-game-js.md`). La siguiente es `06-…`. Un cambio nuevo es una spec nueva, no una edición de una anterior.
+- `specs/.spec-config.yml` — configuración del flujo. `AutoCreateBranch: true` hace que `/spec-impl` cree y cambie a la rama `spec-NN-slug` sin preguntar (con `false` pide confirmación `[y/N]`).
+
+### Estructura de una spec
+
+Todas siguen la misma plantilla, en español:
+
+1. Título `# SPEC NN — <título>` y cabecera con cuatro campos: `Status`, `Depends on` (specs previas o `—`), `Date` (AAAA-MM-DD) y `Objective` (una frase medible).
+2. `## Alcance` — con **Dentro** y **Fuera de alcance (para specs futuras)**.
+3. `## Modelo de datos` — constantes, estructuras y, si aplica, la API pública de cada módulo (qué exporta e importa).
+4. `## Plan de implementación` — pasos numerados e incrementales; cada uno deja el juego jugable y trae su prueba manual.
+5. `## Criterios de aceptación` — lista de casillas `- [ ]` verificables; se marcan `- [x]` al terminar.
+6. `## Decisiones` — **Sí:** / **No:** con el motivo; indica si la elección fue del usuario.
+7. `## Riesgos` — tabla Riesgo | Mitigación.
+8. `## Qué **no** entra en esta spec` — recordatorio de lo excluido; cada punto, si llega, va en su propia spec.
+
+La spec 05 añade además `## Por qué existe esta spec` cuando rompe un patrón de las anteriores.
+
+### Ciclo de vida
+
+1. **Redactar** la spec (`Status` inicial `aprobado`, que pasa a `implementado` al cerrar). Antes de escribirla, aclara con el usuario las decisiones que no se deduzcan del código y regístralas en `## Decisiones`.
+2. **Implementar** siguiendo el plan paso a paso, con un commit por paso. Sin salirse del alcance: lo de "Fuera de alcance" no se toca.
+3. **Verificar** cada criterio de aceptación (servir con el servidor estático y jugar; no hay tests automáticos).
+4. **Cerrar**: marcar los criterios `[x]` y poner `Status: implementado` (commit aparte, p. ej. `update status to implemented and mark acceptance criteria as complete`).
+5. Si la spec cambia algo descrito en este `CLAUDE.md` (módulos, reglas, assets), actualizarlo en el mismo cambio; así lo hizo la spec 05.
+
+### Reglas
+
+- Las specs ya implementadas son historial: no se reescriben. Si el comportamiento cambia, se crea una spec nueva que declare `Depends on` de las anteriores.
+- Una spec nueva debe respetar las convenciones de las anteriores (mismos nombres de funciones, constantes y campos de `state`) salvo que ella misma justifique el cambio en `## Decisiones`.
+- Los commits son cortos, en inglés y en minúsculas, y describen el paso (`add …`, `update …`, `modularize …`).
+
+### Specs existentes
+
+| Spec | Tema | Estado |
+| ---- | ---- | ------ |
+| 01 | MVP jugable: paleta, pelota, bloques, 3 vidas | implementado |
+| 02 | Animación de explosión al destruir bloques | implementado |
+| 03 | Sonidos de rebote y ruptura | implementado |
+| 04 | Niveles infinitos, bloques resistentes, pelota más rápida | implementado |
+| 05 | Modularización de `game.js` en ES modules (`src/`) | implementado |
+
+Al leer una spec antigua ten en cuenta que su código vive hoy en `src/`: las specs 01–04 hablan de `game.js`, que ya no existe (ver spec 05).
+
 ## Ejecutar
 
 No hay build, lint ni tests. Sirve la raíz con un servidor estático: los ES modules no cargan desde `file://`, y cargar imágenes en un canvas desde `file://` puede fallar.
