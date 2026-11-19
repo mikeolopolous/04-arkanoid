@@ -12,27 +12,16 @@ import {
   LEVEL_MESSAGE_TIME,
   BRICK_W,
   BRICK_H,
-  START_LIVES,
   POINTS_PER_BRICK,
   MAX_DT,
   EXPLOSION_FRAME_TIME,
 } from './constants.js';
 import { playSound } from './audio.js';
 import { levelMultiplier, ballSpeed, buildBricks } from './levels.js';
+import { createState } from './state.js';
 
-// Estado
-const state = {
-  status: 'serve', // 'serve' | 'playing' | 'gameover' | 'levelup'
-  score: 0,
-  lives: START_LIVES,
-  level: 1,
-  levelTimer: 0, // s restantes del overlay "NIVEL N"; solo se usa en 'levelup'
-  paddle: { x: (WIDTH - PADDLE_W) / 2 }, // y fija en PADDLE_Y
-  ball: { x: 0, y: 0, vx: 0, vy: 0 }, // esquina superior izquierda; px/s
-  bricks: buildBricks(1), // { x, y, color, hits, alive }
-  explosions: [], // { x, y, color, elapsed }; elapsed en s
-  input: { left: false, right: false, mouseX: null },
-};
+// Estado: única instancia de la partida
+const state = createState();
 
 // Solo para depurar en consola: ningún módulo lo lee
 window.state = state;
