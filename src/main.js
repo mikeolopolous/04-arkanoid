@@ -87,6 +87,9 @@ const state = {
   input: { left: false, right: false, mouseX: null },
 };
 
+// Solo para depurar en consola: ningún módulo lo lee
+window.state = state;
+
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
