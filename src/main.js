@@ -28,20 +28,7 @@ import {
   MAX_DT,
   EXPLOSION_FRAME_TIME,
 } from './constants.js';
-
-// Sonidos: originales precargados; nunca se reproducen directamente
-const SOUNDS = {
-  bounce: new Audio('assets/sounds/ball-bounce.mp3'),
-  break: new Audio('assets/sounds/break-sound.mp3'),
-};
-
-// Reproduce un clon para que sonidos iguales se solapen; los fallos de play() se ignoran
-function playSound(name) {
-  SOUNDS[name]
-    .cloneNode()
-    .play()
-    .catch(() => {});
-}
+import { playSound } from './audio.js';
 
 // Estado
 // ×1 en el nivel 1; ×2, ×4, ×6… a partir del nivel 2
