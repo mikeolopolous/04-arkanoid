@@ -7,61 +7,20 @@ import {
   PADDLE_SPEED,
   PADDLE_Y,
   BALL_SIZE,
-  BALL_SPEED,
-  BALL_SPEED_STEP,
-  MAX_BALL_SPEED,
-  BRICK_COLS,
-  BRICK_ROWS,
-  MAX_ROWS,
-  SPECIAL_COLS,
   SPECIAL_COLOR,
-  SPECIAL_HITS,
   DAMAGED_ALPHA,
   LEVEL_MESSAGE_TIME,
   BRICK_W,
   BRICK_H,
-  BRICK_OFFSET_X,
-  BRICK_OFFSET_Y,
-  ROW_COLORS,
   START_LIVES,
   POINTS_PER_BRICK,
   MAX_DT,
   EXPLOSION_FRAME_TIME,
 } from './constants.js';
 import { playSound } from './audio.js';
+import { levelMultiplier, ballSpeed, buildBricks } from './levels.js';
 
 // Estado
-// ×1 en el nivel 1; ×2, ×4, ×6… a partir del nivel 2
-function levelMultiplier(level) {
-  return level === 1 ? 1 : 2 * (level - 1);
-}
-
-// +20 px/s por nivel hasta MAX_BALL_SPEED
-function ballSpeed(level) {
-  return Math.min(BALL_SPEED + BALL_SPEED_STEP * (level - 1), MAX_BALL_SPEED);
-}
-
-// Una fila más por nivel hasta MAX_ROWS; los colores de fila ciclan ROW_COLORS.
-// Las primeras level − 1 filas llevan especiales en SPECIAL_COLS.
-function buildBricks(level) {
-  const rows = Math.min(BRICK_ROWS + level - 1, MAX_ROWS);
-  const specialRows = Math.min(level - 1, rows);
-  const bricks = [];
-  for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < BRICK_COLS; col++) {
-      const special = row < specialRows && SPECIAL_COLS.includes(col);
-      bricks.push({
-        x: BRICK_OFFSET_X + col * BRICK_W,
-        y: BRICK_OFFSET_Y + row * BRICK_H,
-        color: special ? SPECIAL_COLOR : ROW_COLORS[row % ROW_COLORS.length],
-        hits: special ? SPECIAL_HITS : 1, // golpes que faltan para romperlo
-        alive: true,
-      });
-    }
-  }
-  return bricks;
-}
-
 const state = {
   status: 'serve', // 'serve' | 'playing' | 'gameover' | 'levelup'
   score: 0,
